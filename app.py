@@ -10,8 +10,6 @@ clientsCollection = db.clients
 productsCollection = db.products
 
 clientCounter = 0
-orderCounter = 0
-totalValueCounter = 0
 
 @app.route('/clients', methods=['PUT'])
 def registerClient():
