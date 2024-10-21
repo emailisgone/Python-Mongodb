@@ -38,7 +38,7 @@ def registerClient():
 
     clientCounter += 1
 
-    return jsonify({'id': newClient['intId']}), 201
+    return jsonify({'id': newClient['id']}), 201
 
 @app.route('/clients/<clientId>', methods=['GET'])
 def getClient(clientId):
@@ -48,7 +48,7 @@ def getClient(clientId):
         return 'Client not found', 404
 
     clientData = {
-        'id': client['intId'],
+        'id': client['id'],
         'name': client['name'],
         'email': client['email']
     }
@@ -58,9 +58,11 @@ def getClient(clientId):
 @app.route('/clients/<clientId>', methods=['DELETE'])
 def deleteClient(clientId):
     client = clientsCollection.delete_one({'id': clientId})
-
+    
     if client.deleted_count == 0:
         return 'Client not found', 404
+
+    ordersCollection.delete_many({'clientId': clientId})
 
     return 'Client deleted', 204
 
